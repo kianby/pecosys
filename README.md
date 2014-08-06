@@ -67,4 +67,28 @@ Templates are located under **site/blogduyax/theme/pure-theme/templates**:
 
 ### Pecosys server
 
-The server is written in PYTHON and it must be linked to HTTP server in order to process form submission. If you use APACHE, it can be performed using PROXY module. If you use NginX, I provide a configuration sample under **nginx** directory. 
+**How does it works?**
+
+The server is written in PYTHON. Pecosys servers acts as an HTTP server accepting POST requests. Thus it must be linked to HTTP server in order to process form submission. If you use APACHE, it can be performed using PROXY module. A sample configuration for NginX is provided under **nginx** directory. 
+
+An email account is dedicated to Pecosys server. This email is used for interactions with blog administrator. 
+
+GIT is a central piece of Pecosys server. Pecosys get access to a GIT clone of the blog. When a new comment is posted via the blog performs two things:
+
+-    a notification email is sent to the blog administrator
+-    a new GIT branch is created and the comment is committed into this branch
+
+The blog administrator receives an email describing the comment and he has to reply. A quick reply is a go for publishing whereas a reply starting with "NO" means the comment must be discarded. 
+
+Pecosys servers polls its emails inbox every minute in order to process replies. If the administrator requested to discard the comment the comment branch is deleted. Otherwise the comment branch is merged to the master branch and it is eventually pushed to origin.  
+
+Server configuration is stored in a file named **config.json**. The configuration is divided into four sections:
+
+-    **imap**: this section contains authentication parameters to access email inbox.
+-    **smtp**: the server sends outgoing emails to the blog administrator when a new comment is posted. This section contains authentication parameters to send emails.
+-    **post**: this section contains listening address and port for HTTP POST server, source email and destination email used to send notifications on new comment posting.
+-    **git**: this sections contains the path to GIT repository, the sub-directory contains comments files and a boolean indicating if a push to origin is expected. If you manage GIT in a central workflow you probably want to push changes to the central bare repository. 
+    
+
+    
+
