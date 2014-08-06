@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block content %}
+<section id="content">
+    <article>
+        <header>
+            <h2>
+                <a href="{{ pagename }}"
+                    rel="bookmark"
+                    title="Permalink to {{ article.title }}">
+                        {{ article.title}}
+                </a>
+            </h2>
+        </header>
+        <div>
+            <div class="well">
+                {% include 'article_infos.html' %}
+            </div>
+            {{ article.content }}            
+        </div>
+	<div class="comment">
+	    {% include 'comment.html' %}
+        </div>
+   </article>
+</section>
+{% endblock %}

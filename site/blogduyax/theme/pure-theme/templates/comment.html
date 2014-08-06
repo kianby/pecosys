@@ -1,0 +1,61 @@
+<div id="comment-button">
+    <a class="button-success pure-button" href="javascript:showHide('comment-form');">Commenter</a>
+</div>
+
+<div id="comment-form" style="display:none">
+    <form class="pure-form" role="form" action="" onsubmit="this.action=get_action();" method="post">
+        <fieldset class="pure-group">
+
+            <input class="pure-u-1-2" id="author" name="author" type="text" placeholder="Nom ou Surnom (obligatoire)" required></input>
+            <input class="pure-u-1-2" id="email" name="email" type="email" placeholder="Email (optionnel)"></input>
+            <input class="pure-u-1-2" id="site" name="site" type="text" placeholder="Site Web (optionnel)"></input>
+        </fieldset>
+        <fieldset class="pure-group">            
+            <textarea class="pure-u-1-2" id="message" name="message" rows="3" placeholder="Votre commentaire ..." required></textarea>
+            <div class="divhidden">
+                <input id="captcha" name="captcha" type="text" placeholder="Ne pas remplir si vous êtes humain"></input>
+                <input name="article" id="article" type="hidden" value="{{ article.cacause_article }}">                
+            </div>
+        </fieldset>
+        <button type="submit" class="button-success pure-button">Envoyer</button>            
+    </form>
+</div>
+
+{% if article.cacause_comment %}
+    {% for comment in article.cacause_comment %}
+        <hr>
+        <div class="inline">
+            {% if comment.site %}
+            <a href="{{ comment.site }}">
+            {% endif %}
+            {% if CACAUSE_GRAVATAR and comment.gravatar %}
+            <img src="{{ comment.gravatar }}" height="32" width="32" style="float:left; margin-right:10px"/>
+            {% endif %}
+            {% if comment.site %}
+            </a>
+            {% endif %}
+            <span class="title">{{ comment.author }}</span>
+            {% if comment.date %}
+            <span> - {{ comment.date }}</span>
+            {% endif %}
+        </div>
+        {{ comment.body }}
+    {% endfor %}
+{% endif %}
+
+<script type="text/javascript"><!--
+
+function showHide(elementid){
+    if (document.getElementById(elementid).style.display == 'none'){
+        document.getElementById(elementid).style.display = '';
+        document.getElementById('comment-button').style.display = 'none';
+    } else {
+        document.getElementById(elementid).style.display = 'none';
+    }
+}
+
+function get_action() {
+  return '/post_a_new_comment';
+}
+
+--></script>

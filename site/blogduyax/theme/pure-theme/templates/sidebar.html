@@ -1,0 +1,54 @@
+<div class="well" id="sidebar">
+    <p class="title"><i class="fa fa-user fa-lg"></i>L'auteur</p>
+    <p>Des articles autour de GNU/Linux par un programmeur fan de logiciel libre,
+        d'Open source et de standards ouverts.</p>
+    <p><i class="fa fa-envelope"></i>blogduyax at madyanne.fr</p>
+    <p><a href="{{ SITEURL }}/{{ FEED_ALL_ATOM }}" rel="alternate"><i
+        class="fa fa-rss"></i>Fil des articles</a></p>
+    <a href="{{ SITEURL }}/archives.html"><i class="fa fa-th-list"></i>Archives</a>
+    {% if FEED_RSS %}
+    <p><a href="{{ SITEURL }}/{{ FEED_RSS }}" rel="alternate"><i
+        class="fa fa-rss"></i>Fil RSS</a></p>
+    {% endif %}
+    <p><img src="{{ SITEURL }}/images/author.jpg"/></p>
+    <form class="pure-form pure-form-stacked" role="form" method="get" name="search" action="https://duckduckgo.com/">
+        <fieldset>
+            <input type="hidden" name="sites"value="blogduyax.madyanne.fr"/>
+            <input id="q" name="q" type="text"></input>
+            <button type="submit" class="button-success pure-button"><i class="fa fa-search"></i>Rechercher</button>
+        </fieldset>
+    </form>
+    {% if LINKS %}
+        <p class="title"><i class="fa fa-external-link"></i>Mes liens</p>
+        <ul class="nolist">
+        {% for name, link in LINKS %}
+            <li><a href="{{ link }}"><i class="fa fa-external-link"></i>{{ name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    <p><a href="http://www.planet-libre.org"><img
+        src="{{ SITEURL }}/images/planet-link.png"/></a>
+    </p>
+    {% if SOCIAL %}
+        <p class="title"><i class="fa fa-home fa-lg"></i>Social</p>
+        <ul>
+        {% for name, link in SOCIAL %}
+            <li><a href="{{ link }}"><i class="fa fa-{{ name }}-sign fa-lg"></i>{{ name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    <p class="title"><i class="fa fa-tags fa-lg"></i>Tags</p>
+    <ul class="nolist">
+    {% for tag in tag_cloud %}
+        <li class="tag-{{ tag.1 }}">
+            <a href="{{ SITEURL }}/{{ tag.0.url }}">
+                <i class="fa fa-tag fa-lg"></i>{{ tag.0 }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% if SIDEBAR_CUSTOM %}
+        {{ SIDEBAR_CUSTOM }}
+    {% endif %}
+</div>

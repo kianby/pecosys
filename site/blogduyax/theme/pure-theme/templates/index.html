@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content_title %}{% endblock %}
+{% block content %}
+{% if articles %}
+    {% for article in (articles_page.object_list if articles_page else articles) %}
+    <div class="article">
+        <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+        <div class="well small">{% include "article_infos.html" %}</div>
+        <div class="summary">{{ article.summary }}
+            <a class="btn primary xsmall" href="{{ SITEURL }}/{{ article.url }}">Plus ...</a>
+        </div>
+</div>
+    <hr />
+    {% endfor %}
+{% endif %}
+
+{% if articles_page and articles_paginator.num_pages > 1 %}
+    <ul class="pure-paginator">
+        {% if articles_page.has_previous() %}
+            {% set num = articles_page.previous_page_number() %}
+            <li><a class="pure-button prev" href="{{ SITEURL }}/{{ page_name }}{{ num if num > 1 else '' }}.html">&#171;</a></li>
+        {% else %}
+            <li><a class="pure-button prev pure-button-disabled" href="#">&#171;</a></li>
+        {% endif %}
+        {% for num in range( 1, 1 + articles_paginator.num_pages ) %}
+            <li><a class="pure-button {{ 'pure-button-active' if num == articles_page.number else '' }}" href="{{ SITEURL }}/{{ page_name }}{{ num if num > 1 else '' }}.html">{{ num }}</a></li>
+        {% endfor %}
+        {% if articles_page.has_next() %}
+            <li><a class="pure-button next" href="{{ SITEURL }}/{{ page_name }}{{ articles_page.next_page_number() }}.html">&#187;</a></li>
+        {% else %}
+            <li><a class="pure-button next pure-button-disabled" href="#">&#187;</a></li>
+        {% endif %}
+    </ul>
+{% else %}
+    {% if PAGES %}
+        <section id="content" class="body">
+        <h1>Pages</h1>
+        {% for page in PAGES %}
+                <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
+        {% endfor %}
+        </section>
+{% endif %}
+{% endif %}
+{% endblock content %}

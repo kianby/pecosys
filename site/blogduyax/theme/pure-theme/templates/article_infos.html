@@ -1,0 +1,11 @@
+<footer class="post-info">
+    <span class="label">Date</span>
+    {{ article.locale_date }}
+    {% if PDF_PROCESSOR %}
+        <span class="label">
+            <a href="{{ SITEURL }}/pdf/{{ article.slug }}.pdf">PDF</a>
+        </span>
+    {% endif %}
+
+    {% include 'taglist.html' %}
+</footer>
