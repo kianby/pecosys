@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 
 AUTHOR = u'Yax'
-AUTHOR_EMAIL = 'kianby@madyanne.fr'
+AUTHOR_EMAIL = 'admin@madyanne.fr'
 SITENAME = u'Le blog du Yax'
 SITESUBTITLE = u'GNU/Linux et autres libertés'
 

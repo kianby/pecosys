@@ -3,26 +3,26 @@
         "host": "mail.gandi.net",
         "ssl" : false,
         "port": 143,
-        "login": "hosting@madyanne.fr",
-        "password":"5z7qbMXE2RtPogCT"
+        "login": "blog@mydomain.com",
+        "password":"MYPASSWORD"
     },
     "smtp": {
         "host":"mail.gandi.net",
         "starttls" : true,
         "port": 587,
-        "login": "hosting@madyanne.fr",
-        "password":"5z7qbMXE2RtPogCT"        
+        "login": "blog@mydomain.com",
+        "password":"MYPASSWORD"        
     },
     "post": {
         "host": "127.0.0.1",
         "port": 8001,
-        "redirect_url" : "http://localhost/redirect.html",
+        "redirect_url" : "http://blogduyax.madyanne.fr/redirect.html",
         "redirect_referer": true,
-        "from_email": "hosting@madyanne.fr",
-        "to_email": "yannic.arnoux@madyanne.fr"
+        "from_email": "blog@mydomain.com",
+        "to_email": "admin@mydomain.com"
     },
     "git": {
-        "repo_path": "gitrepo/blogduyax",
+        "repo_path": "../site/blogduyax",
         "comment_path": "comments",
         "remote": false
     }
