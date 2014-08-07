@@ -11,6 +11,8 @@ this approach is in line with strong ideas which stand behind static blogs:
 -    store things in plain text files, forget databases, 
 -    be able to rebuild the entire blog offline.
 
+Pecosys'proposal is to use emails for communicating with the blog administrator. Email is no more hype but it's a reliable and cross-platform way to discuss. You can answer from your PC, your tablet or your smartphone. You can manage things from your home, your desk or remotely. Once a comment is received by Pecosys, an email is sent to the blog administrator. Depending on the anwser the comment is discarded or published. Publishing is possible if Pelican blog is versioned by GIT. Pecosys gets its own copy of the blog and it creates comments by adding plain text files to the blog sources and committing to GIT. 
+
 Pecosys is made of three parts:
 
 -    Pelican plugin adds approved comments to generated pages. A comment is a markup file (Markdown or RST) containing metadata like author, published date, article link and the content. 
@@ -67,7 +69,7 @@ Templates are located under **site/blogduyax/theme/pure-theme/templates**:
 
 ### Pecosys server
 
-**How does it works?**
+**How does it work?**
 
 The server is written in PYTHON. Pecosys servers acts as an HTTP server accepting POST requests. Thus it must be linked to HTTP server in order to process form submission. If you use APACHE, it can be performed using PROXY module. A sample configuration for NginX is provided under **nginx** directory. 
 
@@ -89,6 +91,18 @@ Server configuration is stored in a file named **config.json**. The configuratio
 -    **post**: this section contains listening address and port for HTTP POST server, source email and destination email used to send notifications on new comment posting.
 -    **git**: this sections contains the path to GIT repository, the sub-directory contains comments files and a boolean indicating if a push to origin is expected. If you manage GIT in a central workflow you probably want to push changes to the central bare repository. 
     
+**How to install and run?**
 
+Get the code
+
+    git clone git@github.com:kianby/pecosys.git
     
+Go to **server** directory and update *config.json* configuration to fit your needs
 
+Install Python dependencies. It's a good habit to create a Python virtual env first.
+
+    pip install -r requirements.txt
+    
+Start the server
+
+    python pecosys/runserver.py
