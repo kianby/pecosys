@@ -11,7 +11,7 @@ this approach is in line with static blogs philosophy:
 -    store things in plain text files instead of databases (it makes version control possible), 
 -    be able to rebuild the entire blog offline.
 
-Pecosys intends to use email for communicating with the blog administrator. Email is not hype anymore ;-) but it is a reliable and cross-platform way to discuss. You can answer from your PC, your tablet or your smartphone. You can manage things from your home or from anywhere with your phone. Once a comment is received by Pecosys, an email is sent to the blog administrator. Depending on your anwser the comment is discarded or published. Publishing is possible if Pelican blog is versioned by GIT. Pecosys gets its own copy of the blog and it creates a comment by adding plain text files to the blog sources and committing to GIT. 
+Pecosys intends to use email for communicating with the blog administrator. Email is not hype anymore ;-) but it is reliable and an universal way to discuss. You can answer from your PC, your tablet or your smartphone. You can manage things from your home or from anywhere with your phone. Once a comment is received by Pecosys, an email is sent to the blog administrator. Depending on your anwser the comment is discarded or published. Publishing is possible if Pelican blog is versioned by GIT. Pecosys gets its own copy of the blog and it creates a comment by adding plain text files to the blog sources and committing to GIT. 
 
 Pecosys is made of three parts:
 
