@@ -42,6 +42,9 @@ class Processor(Thread):
         try:
             logger.info("new comment received ")
 
+            if site and site[:4] != "http":
+                site = "http://" + site
+
             # Create comment
             now = datetime.now()
             comment_list = (
@@ -60,6 +63,7 @@ class Processor(Thread):
             logger.debug(comment)
 
             # Git 
+            git.checkout('master')
             if pecosys.get_config("git", "remote"):
                 git.pull()
 
@@ -72,8 +76,8 @@ class Processor(Thread):
 
             comment_filename = 'comment-%s.md' % now.strftime("%Y%m%d-%H%M%S")
             comment_pathname = '%s/%s/%s' % (pecosys.get_config('git', 'comment_path'), now.year, comment_filename)
-            with open(comment_pathname, 'a') as f:
-                f.write('%s' % comment)
+            with open(comment_pathname, 'wb') as f:
+                f.write(comment.encode('UTF-8'))
             git.add(comment_pathname)
             git.commit('-m', 'new comment')
             git.checkout('master')

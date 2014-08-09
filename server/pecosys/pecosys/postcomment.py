@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 def postcomment():
 
     logger.info("new comment !!!!")
+    source_url = request.headers.get('referer', '')
     url = app.config["pecosys"]["post"]["redirect_url"]
     try:
 
@@ -34,7 +35,7 @@ def postcomment():
         if captcha:
             logger.warn("discard spam: captcha %s author %s email %s site %s article %s message %s" % (captcha, author, email, site, article, message))
         else:
-            req = { 'type':'comment', 'author':author, 'email':email, 'site':site, 'article':article, 'message':message, 'url':url}
+            req = { 'type':'comment', 'author':author, 'email':email, 'site':site, 'article':article, 'message':message, 'url':source_url}
             processor.enqueue(req)
 
     except:
