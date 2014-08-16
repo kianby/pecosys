@@ -1,5 +1,5 @@
-<div id="comment-button">
-    <a class="button-success pure-button" href="javascript:showHide('comment-form');">Commenter</a>
+<div id="submit-button">
+    <a class="button-success pure-button" href="javascript:showHide('comment-form', 'submit-button');">Commenter</a>
 </div>
 
 <div id="comment-form" style="display:none">
@@ -10,18 +10,29 @@
             <input class="pure-u-1-2" id="email" name="email" type="email" placeholder="Email (optionnel)"></input>
             <input class="pure-u-1-2" id="site" name="site" type="text" placeholder="Site Web (optionnel)"></input>
         </fieldset>
-        <fieldset class="pure-group">            
+        <fieldset class="pure-group">
             <textarea class="pure-u-1-2" id="message" name="message" rows="3" placeholder="Votre commentaire ..." required></textarea>
             <div class="divhidden">
                 <input id="captcha" name="captcha" type="text" placeholder="Ne pas remplir si vous êtes humain"></input>
-                <input name="article" id="article" type="hidden" value="{{ article.cacause_article }}">                
+                <input name="article" id="article" type="hidden" value="{{ article.cacause_article }}">
             </div>
         </fieldset>
-        <button type="submit" class="button-success pure-button">Envoyer</button>            
+        <button type="submit" class="button-success pure-button">Envoyer</button>
     </form>
 </div>
 
 {% if article.cacause_comment %}
+
+    <p></p>
+    <div id="show-button">
+        {% if article.cacause_comment|length > 1 %}
+        <a class="button-success pure-button" href="javascript:showHide('comments-list', 'show-button');">Voir les {{ article.cacause_comment|length }} commentaires</a>
+        {% else %}
+        <a class="button-success pure-button" href="javascript:showHide('comments-list', 'show-button');">Voir le commentaire</a>
+        {% endif %}
+    </div>
+
+    <div id="comments-list" style="display:none">
     {% for comment in article.cacause_comment %}
         <hr>
         <div class="inline">
@@ -41,16 +52,17 @@
         </div>
         {{ comment.body }}
     {% endfor %}
+    </div>
 {% endif %}
 
 <script type="text/javascript"><!--
 
-function showHide(elementid){
-    if (document.getElementById(elementid).style.display == 'none'){
-        document.getElementById(elementid).style.display = '';
-        document.getElementById('comment-button').style.display = 'none';
+function showHide(panel_id, button_id){
+    if (document.getElementById(panel_id).style.display == 'none'){
+        document.getElementById(panel_id).style.display = '';
+        document.getElementById(button_id).style.display = 'none';
     } else {
-        document.getElementById(elementid).style.display = 'none';
+        document.getElementById(panel_id).style.display = 'none';
     }
 }
 
