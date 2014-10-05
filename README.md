@@ -82,9 +82,9 @@ GIT is a central piece of Pecosys server. Pecosys get access to a GIT clone of t
 
 The blog administrator receives an email describing the comment and he has to reply. A quick reply is a go for publishing whereas a reply starting with "NO" means the comment must be discarded. Pecosys uses email subjects to know what the context is. So do not change email subject when replying.  
 
-Pecosys servers polls its emails inbox every minute in order to process replies. If the administrator requested to discard the comment then the comment branch is deleted. Otherwise the comment branch is merged to the master branch and it is pushed to origin.  
+Pecosys servers polls email inbox every minute in order to process replies. If the administrator requested to discard the comment then the comment branch is deleted. Otherwise the comment branch is merged to the master branch and it is pushed to origin.  
 
-Server configuration is stored in a file named **config.json**. The configuration is divided into four sections:
+Server configuration is stored in a JSON file. A config named **config.json** is provided as example. The configuration is divided into four sections:
 
 -    **imap**: authentication parameters to access email inbox.
 -    **smtp**: authentication parameters to send emails.
@@ -103,9 +103,10 @@ Install Python dependencies. It's a good habit to create a Python virtual env fi
 
     pip install -r requirements.txt
     
+
 Start the server
 
-    python pecosys/runserver.py
+    python pecosys/runserver.py [CONFIG_PATHNAME]
 
 
 **I recommend testing in a sandbox to validate GIT interactions before going for production.**

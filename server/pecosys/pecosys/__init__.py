@@ -16,7 +16,9 @@ import pecosys.processor
 def load_config():
     """ load global config from json file
     """
-    with open('config.json', 'rt') as config_file:
+    config_path = os.environ['CONFIG_PATHNAME']
+    logger.info("Load config from %s" % config_path)
+    with open(config_path, 'rt') as config_file:
         config = json.loads(config_file.read())
         return config
 

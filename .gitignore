@@ -52,7 +52,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-# pecosys specific
+# machine  specific
 site/copy-blog.sh
 site/blogduyax/output/
 site/blogduyax/cache/
+server/gitrepo/
+server/config-blogduyax.json

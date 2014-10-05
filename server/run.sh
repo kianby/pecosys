@@ -1,2 +1,2 @@
 #!/bin/sh
-echo -e "import pecosys\npecosys.run()" | python
+python pecosys/runserver.py "$@"

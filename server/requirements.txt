@@ -1,5 +1,7 @@
 Flask==0.10.1
-Werkzeug==0.9.6
 Jinja2==2.7.3
+MarkupSafe==0.23
+Werkzeug==0.9.6
+clize==2.4
 itsdangerous==0.24
 sh==1.09
