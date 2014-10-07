@@ -15,6 +15,7 @@ from queue import Queue
 import sh
 from sh import git
 import pecosys
+import gettext
 
 logger = logging.getLogger(__name__)
 queue = Queue()
@@ -26,6 +27,10 @@ class Processor(Thread):
         self.is_running = False
 
     def run(self):
+
+        self.encoding = "latin-1"
+        if pecosys.get_config("global", "lang") == "fr": 
+            self.encoding = "UTF-8"
 
         self.is_running = True
         while self.is_running:
@@ -63,27 +68,31 @@ class Processor(Thread):
             logger.debug(comment)
 
             # Git 
-            git.checkout('master')
-            if pecosys.get_config("git", "remote"):
-                git.pull()
-
             branch_name = now.strftime("%Y%m%d%H%M%S%f")
-            try:
-                git.checkout(branch_name)
-            except:
-                git.branch(branch_name)
-                git.checkout(branch_name)
+            if pecosys.get_config("git", "disabled"):
+                logger.debug("GIT usage disabled (debug mode)")
+            else:
+                git.checkout('master')
+                if pecosys.get_config("git", "remote"):
+                    git.pull()
 
-            comment_filename = 'comment-%s.md' % now.strftime("%Y%m%d-%H%M%S")
-            comment_pathname = '%s/%s/%s' % (pecosys.get_config('git', 'comment_path'), now.year, comment_filename)
-            with open(comment_pathname, 'wb') as f:
-                f.write(comment.encode('UTF-8'))
-            git.add(comment_pathname)
-            git.commit('-m', 'new comment')
-            git.checkout('master')
+                try:
+                    git.checkout(branch_name)
+                except:
+                    git.branch(branch_name)
+                    git.checkout(branch_name)
+
+                comment_filename = 'comment-%s.md' % now.strftime("%Y%m%d-%H%M%S")
+                comment_pathname = '%s/%s/%s' % (pecosys.get_config('git', 'comment_path'), now.year, comment_filename)
+                with open(comment_pathname, 'wb') as f:
+                    f.write(comment.encode('UTF-8'))
+                git.add(comment_pathname)
+                git.commit('-m', 'new comment')
+                git.checkout('master')
 
             # Send email
-            mail('[' + branch_name + ']',  "Reply to publish following comment or reply NO to reject comment\n\n%s" % comment)
+            question_message = _(u'Send back email to accept the comment or reply NO to reject the comment')
+            mail('[' + branch_name + ']',  "%s\n\n%s" % (question_message, comment))
 
             logger.debug("new comment processed ")
         except:
@@ -98,14 +107,23 @@ class Processor(Thread):
             # positive logic: no answer or unknown answer is a go for publishing
             if message[:2].upper() == 'NO'.encode('UTF-8'):
                 logger.info('discard comment: %s' % branch_name)
-                mail('Re: [%s]' % branch_name, "comment discarded\n\n%s" % message.decode("latin-1"))
+                answer_message = _(u'Comment discarded')
+                mail('Re: [%s]' % branch_name, "%s\n\n%s" % (answer_message, message.decode(self.encoding))) 
             else:
-                git.merge(branch_name)
-                if pecosys.get_config("git", "remote"):
-                    git.push()                            
-                logger.info('commit comment: %s' % branch_name)  
-                mail('Re: [%s]' % branch_name, "comment published\n\n%s" % message.decode("latin-1"))
-            git.branch("-D", branch_name)
+                if pecosys.get_config("git", "disabled"):
+                    logger.debug("GIT usage disabled (debug mode)")
+                else:
+                    git.merge(branch_name)
+                    if pecosys.get_config("git", "remote"):
+                        git.push()                            
+                    logger.info('commit comment: %s' % branch_name)
+                answer_message = _(u'Comment approved')  
+                mail('Re: [%s]' % branch_name, "%s\n\n%s" % (answer_message, message.decode(self.encoding)))
+            
+            if pecosys.get_config("git", "disabled"):
+                logger.debug("GIT usage disabled (debug mode)")
+            else:
+                git.branch("-D", branch_name)
         except:
             logger.exception("new email failure")
    

@@ -1,4 +1,7 @@
 { 
+    "global" : {
+        "lang": "en"
+    },
     "imap": {
         "host": "mail.gandi.net",
         "ssl" : false,

@@ -5,6 +5,7 @@ import os
 import json
 import logging
 from flask import Flask
+import gettext
 from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
@@ -55,8 +56,17 @@ logger = logging.getLogger(__name__)
 configure_logging(logging.DEBUG)
 
 # configure flask
+
 config = load_config()
+config["git"]["disabled"] = bool(os.environ['NO_GIT'])
 app.config["pecosys"] = config
+
+# i18n
+default_locale = config['global']['lang']
+logger.debug("Locale: %s"  % default_locale)
+gettext.install('messages', 'pecosys/translations')
+ro = gettext.translation('messages', localedir='pecosys/translations', languages=[default_locale])
+ro.install()
 
 # start processor thread
 processor.start(config)

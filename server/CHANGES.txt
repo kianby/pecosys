@@ -2,4 +2,5 @@ v0.1.0, 2014/06/22 -- Initial release.
 v0.1.1, 2014/06/29 -- Create package and draft modules.
 v0.1.2, 2014/07/10 -- Progress on plumbing. Use PyPubSub module.
 v0.1.3, 2014/07/14 -- Progress on plumbing . Use a basic thread as consumer and a queue for storing messages.
-v0.1.4, 2014/08/06 -- Improve redirect. Fix minor bugs
+v0.1.4, 2014/08/06 -- Improve redirect. Fix minor bugs.
+v0.1.5, 2014/10/07 -- Add french translation. 

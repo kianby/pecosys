@@ -35,7 +35,7 @@ nosetests.xml
 coverage.xml
 
 # Translations
-*.mo
+#*.mo
 
 # Mr Developer
 .mr.developer.cfg
@@ -47,7 +47,7 @@ coverage.xml
 
 # Django stuff:
 *.log
-*.pot
+#*.pot
 
 # Sphinx documentation
 docs/_build/
@@ -58,3 +58,6 @@ site/blogduyax/output/
 site/blogduyax/cache/
 server/gitrepo/
 server/config-blogduyax.json
+server/messages.pot
+i18n*
+babel.cfg
