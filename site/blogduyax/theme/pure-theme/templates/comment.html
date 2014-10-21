@@ -12,10 +12,16 @@
         </fieldset>
         <fieldset class="pure-group">
             <textarea class="pure-u-1-2" id="message" name="message" rows="3" placeholder="Votre commentaire ..." required></textarea>
+        </fieldset>
+        <fieldset>
+            <label for="subscribe" class="pure-checkbox">
+                <input name="subscribe" id="subscribe"
+                type="checkbox">&nbsp;S'abonner aux commentaires de cet article (email requis)
+            </label>
             <div class="divhidden">
                 <input id="captcha" name="captcha" type="text" placeholder="Ne pas remplir si vous êtes humain"></input>
                 <input name="article" id="article" type="hidden" value="{{ article.cacause_article }}">
-            </div>
+            </div>             
         </fieldset>
         <button type="submit" class="button-success pure-button">Envoyer</button>
     </form>
