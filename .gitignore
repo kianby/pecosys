@@ -61,3 +61,5 @@ server/config-blogduyax.json
 server/messages.pot
 i18n*
 babel.cfg
+Session.vim
+server/db.json

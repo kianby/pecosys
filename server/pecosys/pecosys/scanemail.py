@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 import time
-import threading
 from threading import Thread
 import logging
 import re
@@ -11,6 +10,7 @@ from pecosys import imap
 from pecosys import processor
 
 logger = logging.getLogger(__name__)
+
 
 class EmailScanner(Thread):
 
@@ -36,14 +36,15 @@ class EmailScanner(Thread):
 
             except:
                 logger.exception("main loop exception")
-                
-        self.is_running = False
 
+            # exit on crash
+            time.sleep(10)
+        self.is_running = False
 
     def process(self, mbox, msg_num, msg):
 
         # log message
-        logger.info('%s Message %d %s' % ('-' * 30, msg_num , '-' * 30))
+        logger.info('%s Message %d %s' % ('-' * 30, msg_num, '-' * 30))
         for key in msg.keys():
             logger.info('%s = %s' % (key, msg[key]))
 
@@ -56,6 +57,7 @@ class EmailScanner(Thread):
 
     def is_reply_comment(self, msg):
         return re.match(".*\[.*\]", msg["Subject"])
+
 
 def start(config):
     scanner = EmailScanner()

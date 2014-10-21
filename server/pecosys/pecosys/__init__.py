@@ -1,18 +1,18 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 import json
 import logging
 from flask import Flask
-import gettext
 from werkzeug.contrib.fixers import ProxyFix
 
 app = Flask(__name__)
 
-import pecosys.postcomment
-import pecosys.scanemail
-import pecosys.processor
+from pecosys import postcomment
+from pecosys import processor
+from pecosys import scanemail
+
 
 def load_config():
     """ load global config from json file
@@ -43,12 +43,13 @@ def configure_logging(level):
 
 def get_entire_config():
     return config
-    
+
+
 def get_config(section, param, value=None):
     try:
         value = config[section][param]
     except:
-        logger.warn("missing config param %s.%s" % (section,param))
+        logger.warn("missing config param %s.%s" % (section, param))
     return value
 
 # configure logging
@@ -59,20 +60,21 @@ configure_logging(logging.DEBUG)
 
 config = load_config()
 config["git"]["disabled"] = bool(os.environ['NO_GIT'])
+config["global"]["cwd"] = os.getcwd()
 app.config["pecosys"] = config
 
 # i18n
 default_locale = config['global']['lang']
-logger.debug("Locale: %s"  % default_locale)
-gettext.install('messages', 'pecosys/translations')
-ro = gettext.translation('messages', localedir='pecosys/translations', languages=[default_locale])
-ro.install()
+logger.debug("Locale: %s" % default_locale)
 
 # start processor thread
 processor.start(config)
 
 # start email scanner thread
 scanemail.start(config)
+
+# initialize postcomment
+postcomment.init()
 
 # change dir to GIT repository
 os.chdir(get_config('git', 'repo_path'))
