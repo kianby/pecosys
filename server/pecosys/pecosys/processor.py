@@ -14,6 +14,8 @@ from tinydb import TinyDB, where
 import chardet
 from jinja2 import Environment, FileSystemLoader
 import pecosys
+from pecosys import executor
+
 
 logger = logging.getLogger(__name__)
 queue = Queue()
@@ -105,7 +107,7 @@ class Processor(Thread):
             self.mail(pecosys.get_config('post', 'from_email'), pecosys.get_config('post', 'to_email'),
                       '[' + branch_name + '-' + article + ']',  email_body)
 
-            # reader subscribes to further comments
+            # Reader subscribes to further comments
             if subscribe and email:
                 self.subscribe_reader(email, article, url)
 
@@ -134,7 +136,16 @@ class Processor(Thread):
                     if pecosys.get_config("git", "remote"):
                         git.push()
                     logger.info('commit comment: %s' % branch_name)
+
+                # execute post-commit command asynchronously
+                postcommand = pecosys.get_config('post', 'postcommand')
+                if postcommand:
+                    executor.execute(postcommand)
+
+                # send approval confirmation email to admin
                 email_body = self.get_template('approve_comment').render(original=message)
+
+                # notify subscribers about new comment
                 self.notify_readers(article)
 
             if email_body:

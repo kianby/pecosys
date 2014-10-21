@@ -14,15 +14,20 @@
         "starttls" : true,
         "port": 587,
         "login": "blog@mydomain.com",
-        "password":"MYPASSWORD"        
+        "password":"MYPASSWORD"
     },
     "post": {
         "host": "127.0.0.1",
         "port": 8001,
-        "redirect_url" : "http://blogduyax.madyanne.fr/redirect.html",
+        "redirect_url" : "http://blog.mydomain.com/redirect.html",
         "redirect_referer": true,
         "from_email": "blog@mydomain.com",
-        "to_email": "admin@mydomain.com"
+        "to_email": "admin@mydomain.com",
+        "postcommand": "/usr/local/bin/publish.sh"
+    },
+    "subscription": {
+        "from_email": "blog@mydomain.com",
+        "url": "http://blog.mydomain.com/unsubscribe"
     },
     "git": {
         "repo_path": "../site/blogduyax",
