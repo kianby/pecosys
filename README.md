@@ -7,14 +7,15 @@ people use hosting services like Disqus to manage blog comments. Pecosys
 brings a different approach by making comments part of the static blog. I feel
 this approach is in line with static blogs philosophy:
 
--    keep your data, do not delegate to 3rd-party services,
+-    protect your data ; do not delegate to 3rd-party services,
 -    store things in plain text files, (making version control possible),
 -    be able to rebuild the entire blog offline.
 
-Pecosys intends to use email for communicating with the blog administrator.
-Email is not hype anymore but I'm an old-school guy ;-) Email is reliable and
-an universal way to discuss. You can answer from your PC, from webmail or your
-old smartphone. Pecosys relies on **email** and **GIT**.
+Pecosys intends to use email to communicate with the blog administrator.  Email
+is no more hype but I'm an old-school guy ;-) Email is reliable and an
+universal way to discuss. You can answer from home using your email client,
+from work using a webmail or from your smartphone. Pecosys makes an intensive
+usage of  **email** and **GIT**.
 
 ###  Features overview
 
@@ -25,9 +26,9 @@ Here is the workflow:
 -    Readers can submit comments via a comment form embedded in blog pages
 -    Blog administrator receives an email notification from Pecosys when a
      comment is submitted
--    Blog administrator can approve or drop the comment by replying by email to
+-    Blog administrator can approve or drop the comment by replying to
      Pecosys
--    Pecosys converts approved comment to Markdown file and commit to GIT.
+-    Pecosys creates approved comment as a Markdown file and commit to GIT.
      Optionally, Pecosys can launch Pelican publishing process to update the
      blog
 
@@ -59,7 +60,7 @@ to submit comments with following data:
 
 Some JavaScript code posts the form to a local URL bound to... Pecosys.
 
-I can guess some questions:
+I can guess two questions:
 
 *So the blog needs a server-side language?*
 - Right! Pecosys is written in Python and it uses Flask Web framework. You
@@ -69,49 +70,50 @@ I can guess some questions:
 
 *How do you block spammers?*
 - That's a huge topic. Current comment form is basic: no captcha support but a honey
-  pot. Nothing prevents to enrich this template with JavaScript libs to do more
+  pot. Nothing prevents from improving the template with JavaScript libs to do more
   complex things.
 
-Let's continue explanations!
+Back to explanations!
 
 Once the comment is posted to Pecosys, an email is sent to the blog
-administrator. Depending on your anwser the comment is discarded or published.
-Publishing is possible if Pelican blog is versioned by GIT. Pecosys gets its
-own copy of the blog and it creates a comment by adding plain text files to the
-blog sources and committing to GIT.
+administrator. Depending on administrator's answer the comment is discarded or
+published.  Publishing is possible because the blog is versioned by GIT.
+Pecosys maintainss its own copy of the blog and it creates a comment by adding
+plain text files to the blog sources and committing to GIT.
 
 *Is GIT a strong requirement?*
-- Absolutely! Pelican is thought to be versioned. And GIT is the must. Pecosys
-  likes centralized GIT workflow where writers commit to barebone GIT
+- Absolutely! Pelican's blogs are thought to be versioned. And GIT is the must.
+  Pecosys likes centralized GIT workflow where writers commit to a barebone GIT
   repository and Pecosys pulls and pushes to the same.
 
 *You talk about subscribers. How does it run?*
-- Readers subscribe at the time they submit a comment. Pecosys stores
-  subscriber data inside a light database (TinyDB). When a comment is approved
-  for the same post, Pecosys sends an email notification to all subscribers to
-  recall article link and providing a link to unsubscribe. That unsubscribe URL
-  is the second link to have to handle at HTTP server level to bind Pecosys
-  behind.
+- Readers have the choice to subscribe at the time they submit a comment.
+  Pecosys stores subscriber data inside a light database (TinyDB). When a
+  comment is approved for the same post, Pecosys sends an email notification to
+  all subscribers to recall article link and to provide an unsubscribe link.
+  That unsubscribe URL is the second link you have to bind at HTTP server level
+  with Pecosys.
 
 From software architecture point of view, Pecosys is made of three parts:
 
 -    Pelican plugin: it processes comment markup files on Pelican build to
-     generate HTML pages. 
+     generate HTML pages.
 -    Pelican template: it provides a comment form at the bottom of each
      article.
 -    Pecosys server: it receives submitted comments and manages approval
      process by interacting with blog administrator by email. It drives GIT
-     commits and subscribers notifications.
+     commits and subscribers notifications. It's the big piece.
 
 ### Pecosys plugin
 
 CaCause is the Pelican plugin for managing blog comments. Comments are part of
 the blog and they're stored on disk. Thus they can be versioned by GIT. You
-have to create a dedicated directory and to customize Pelican configuration. 
+have to create a dedicated directory to store comments and to customize Pelican
+configuration to declare the plugin.
 
 **Plugin usage**
 
-Customize Pelican configuration defined in *pelicanconf.py* in this way:
+Customize Pelican configuration defined in *pelicanconf.py* like this:
 
     # register cacause plugin
     PLUGINS = ['cacause',]
@@ -124,7 +126,7 @@ Parameters:
 
 -   Add 'cacause' to the list of enabled plugins
 -   *CACAUSE_DIR* is a directory under Pelican root directory where comments
-    are stored in REST or Markdown format.
+    are stored in markup format.
 -   *CACAUSE_GRAVATAR* is a boolean to enable or disable Gravatar support.
 
 **Comment file**
@@ -151,16 +153,17 @@ is a key to link the comment to the article. Actually it is a MD5 hash of
 article relative path. Usually you anwser to a user comment and you already get
 get this key in user's comment file. So you can copy and paste to yours.
 Another way to do it: use the comment form on the blog itself and let Pecosys
-doing the work.   
+doing the job   
 
 ### Pelican template
 
-The blog under **site** directory is a real example of a Pelican site relying on Pecosys for comments. 
+The blog under **site** directory is a [real example of a Pelican site using
+Pecosys](http://blogduyax.madyanne.fr) for comments.
 
 Templates are located under **site/blogduyax/theme/pure-theme/templates**:
 
--   article.html has been modified to embed the template comment.html
--   comment.html is the template defining the form to post comments
+-   **article.html** has been modified to embed the comment template
+-   **comment.html** is the template defining the form
 
 ### Pecosys server
 
@@ -186,7 +189,7 @@ reply. A quick reply is a go for publishing whereas a reply starting with
 know the context. So do not change email subject when replying.
 
 Pecosys servers polls email inbox every minute in order to process replies. If
-the administrator requested to discard the comment then the comment branch is
+the administrator requests to discard the comment then the comment branch is
 deleted. Otherwise the comment branch is merged to the master branch and it is
 pushed to origin.
 
@@ -206,6 +209,17 @@ sections:
      sub-directory contains comments files and a boolean indicating if a push
      to origin is expected. If you manage GIT in a central workflow you
      probably want to push changes to the bare repository. 
+
+Subscribers are stored in a file **db.json** in the startup directory. 
+
+Which technology is used:
+
+-    [Python](https://www.python.org)
+-    [Flask](http://flask.pocoo.org)
+-    [TinyDB](https://tinydb.readthedocs.org/en/latest).
+-    [Sh](https://pypi.python.org/pypi/sh)
+-    [Clize](https://pypi.python.org/pypi/clize)
+-    [Markdown](http://daringfireball.net/projects/markdown)
 
 **How to install and run?**
 
