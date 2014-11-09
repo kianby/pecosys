@@ -26,37 +26,40 @@ class EmailScanner(Thread):
 
             try:
                 with imap.Mailbox(pecosys.get_entire_config()) as mbox:
-                    for num in range(mbox.get_count()):
+                    count = mbox.get_count()
+                    # logger.debug('check inbox: %d email(s)' % count)
+                    for num in range(count):
                         msg_num = num + 1
                         msg = mbox.fetch_simple_message(msg_num)
-                        self.process(mbox, msg_num, msg)
+                        process(mbox, msg_num, msg)
                         break
-
-                    time.sleep(30)
 
             except:
                 logger.exception("main loop exception")
 
-            # exit on crash
-            time.sleep(10)
+            # check email every 30 seconds
+            time.sleep(30)
+
         self.is_running = False
 
-    def process(self, mbox, msg_num, msg):
 
-        # log message
-        logger.info('%s Message %d %s' % ('-' * 30, msg_num, '-' * 30))
-        for key in msg.keys():
-            logger.info('%s = %s' % (key, msg[key]))
+def process(mbox, msg_num, msg):
 
-        if self.is_reply_comment(msg):
-            msg['type'] = 'reply_comment_email'
-            processor.enqueue(msg)
+    # log message
+    logger.info('%s Message %d %s' % ('-' * 30, msg_num, '-' * 30))
+    for key in msg.keys():
+        logger.info('%s = %s' % (key, msg[key]))
 
-        # delete message
-        mbox.delete_message(msg_num)
+    if is_reply_comment(msg):
+        msg['type'] = 'reply_comment_email'
+        processor.enqueue(msg)
 
-    def is_reply_comment(self, msg):
-        return re.match(".*\[.*\]", msg["Subject"])
+    # delete message
+    mbox.delete_message(msg_num)
+
+
+def is_reply_comment(msg):
+    return re.match(".*\[.*\]", msg["Subject"])
 
 
 def start(config):
