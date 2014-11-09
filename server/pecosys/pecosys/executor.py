@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def async_run(cmd_line):
     try:
         logger.info('start of execution: %s' % cmd_line)
-        exitcode = subprocess.call([cmd_line])
+        exitcode = subprocess.call([cmd_line], shell=True)
         if exitcode == 0:
             logger.info('end of execution: %s' % cmd_line)
         else:
