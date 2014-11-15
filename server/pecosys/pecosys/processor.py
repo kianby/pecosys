@@ -166,16 +166,14 @@ def reply_comment_email(from_email, subject, message):
 
 
 def get_email_metadata(message):
-    # ugly: retrieve metadata reader email and URL from email body sent by admin
-    # ^email:\s(.*)$
-    # ^url:\s(.*)$
+    # retrieve metadata reader email and URL from email body sent by admin
     email = ""
     url = ""
-    m = re.search('email:\s(.*)', message)
+    m = re.search('email:\s(.+@.+\..+)', message)
     if m:
         email = m.group(1)
 
-    m = re.search('url:\s(.*)', message)
+    m = re.search('url:\s(.+)', message)
     if m:
         url = m.group(1)
     return (email, url)
@@ -208,7 +206,7 @@ def notify_subscribers(article):
 
 
 def notify_reader(email, url):
-    logger.info('notify reader: email %s URL %s' % (email, url))
+    logger.info('notify reader: email %s about URL %s' % (email, url))
     email_body = get_template('notify_reader').render(article_url=url)
     subject = get_template('notify_message').render()
     mail(pecosys.get_config('subscription', 'from_email'), email, subject, email_body)
