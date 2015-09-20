@@ -243,4 +243,4 @@ Start the server
 
 Enjoy!
 
-**UPDATE (09/2015)** if you enjoy Pecosys you should give a try to Stacosys
+**UPDATE (09/2015):** if you enjoy Pecosys you should give a try to [Stacosys](https://github.com/kianby/stacosys)
