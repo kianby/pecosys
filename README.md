@@ -242,3 +242,5 @@ Start the server
 **I recommend testing in a sandbox to validate GIT interactions before going to production.**
 
 Enjoy!
+
+**UPDATE (09/2015)** if you enjoy Pecosys you should give a try to Stacosys
