@@ -1,3 +1,5 @@
+# [DEPRECATED] Moved to [Stacosys](https://github.com/kianby/stacosys)
+
 ## Pecosys
 
 Pecosys (aka PElican COmment SYStem) is a blog comment system dedicated to
